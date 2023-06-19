@@ -154,19 +154,14 @@ func resourceAlicloudCrEEInstanceCreate(d *schema.ResourceData, meta interface{}
 			Value: "true",
 		})
 	}
-	if v, ok := d.GetOk("security_scan_type"); ok {
+	if v, ok := d.GetOk("scan_service"); ok {
 		parameters = append(parameters, bssopenapi.CreateInstanceParameter{
-			Code:  "DefaultSecurityScan",
+			Code:  "DefaultScanService",
 			Value: "false",
 		})
 		parameters = append(parameters, bssopenapi.CreateInstanceParameter{
-			Code:  "InstanceSecurityScan",
+			Code:  "ScanService",
 			Value: v.(string),
-		})
-	} else {
-		parameters = append(parameters, bssopenapi.CreateInstanceParameter{
-			Code:  "DefaultSecurityScan",
-			Value: "true",
 		})
 	}
 	request.Parameter = &parameters
