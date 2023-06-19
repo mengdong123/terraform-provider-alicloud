@@ -70,6 +70,10 @@ func resourceAlicloudCrEEInstance() *schema.Resource {
 				Type:     schema.TypeString,
 				Optional: true,
 			},
+			"security_scan_type": {
+				Type:     schema.TypeString,
+				Optional: true,
+			},
 			"status": {
 				Type:     schema.TypeString,
 				Computed: true,
@@ -147,6 +151,21 @@ func resourceAlicloudCrEEInstanceCreate(d *schema.ResourceData, meta interface{}
 	} else {
 		parameters = append(parameters, bssopenapi.CreateInstanceParameter{
 			Code:  "DefaultOssBucket",
+			Value: "true",
+		})
+	}
+	if v, ok := d.GetOk("security_scan_type"); ok {
+		parameters = append(parameters, bssopenapi.CreateInstanceParameter{
+			Code:  "DefaultSecurityScan",
+			Value: "false",
+		})
+		parameters = append(parameters, bssopenapi.CreateInstanceParameter{
+			Code:  "InstanceSecurityScan",
+			Value: v.(string),
+		})
+	} else {
+		parameters = append(parameters, bssopenapi.CreateInstanceParameter{
+			Code:  "DefaultSecurityScan",
 			Value: "true",
 		})
 	}
